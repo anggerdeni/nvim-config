@@ -1,13 +1,15 @@
 return {
+    -- themes
     {
-        "folke/tokyonight.nvim",
+        'navarasu/onedark.nvim',
         lazy = false,    -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
-        config = function()
-            -- load the colorscheme here
-            vim.cmd([[colorscheme tokyonight]])
-        end,
     },
+    -- {
+    --     'folke/tokyonight.nvim',
+    --     lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    --     priority = 1000, -- make sure to load this before all the other start plugins
+    -- }
 
     -- git related
     { 'tpope/vim-fugitive' },
@@ -58,8 +60,8 @@ return {
     { 'mbbill/Undotree' },
 
     {
-        "folke/trouble.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        'folke/trouble.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         opts = {
             -- your configuration comes here
             -- or leave it empty to use the default settings
@@ -67,7 +69,7 @@ return {
         },
     },
     {
-        "folke/zen-mode.nvim",
+        'folke/zen-mode.nvim',
         opts = {
             -- your configuration comes here
             -- or leave it empty to use the default settings
@@ -77,8 +79,8 @@ return {
 
     -- plugins/rest.lua
     {
-        "rest-nvim/rest.nvim",
-        dependencies = { { "nvim-lua/plenary.nvim" } },
+        'rest-nvim/rest.nvim',
+        dependencies = { { 'nvim-lua/plenary.nvim' } },
     },
 
     -- { 'f-person/git-blame.nvim' }, -- causing severe lag on relatively large monorepo
