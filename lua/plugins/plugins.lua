@@ -46,7 +46,7 @@ return {
     { 'lukas-reineke/indent-blankline.nvim' }, -- Add indentation guides even on blank lines
     {
         'numToStr/Comment.nvim',
-        opts = { },
+        opts = {},
         lazy = false,
     },
 
@@ -66,6 +66,20 @@ return {
             -- refer to the configuration section below
         },
     },
+    {
+        "folke/zen-mode.nvim",
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        }
+    },
 
-    -- { 'f-person/git-blame.nvim' } -- causing severe lag on relatively large monorepo
+    -- plugins/rest.lua
+    {
+        "rest-nvim/rest.nvim",
+        dependencies = { { "nvim-lua/plenary.nvim" } },
+    },
+
+    -- { 'f-person/git-blame.nvim' }, -- causing severe lag on relatively large monorepo
 }
