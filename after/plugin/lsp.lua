@@ -51,7 +51,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-    ensure_installed = {'gopls', 'tsserver', 'rust_analyzer', 'lua_ls'},
+    ensure_installed = {'gopls', 'tsserver', 'rust_analyzer', 'lua_ls', 'html', 'cssls'},
     handlers = {
         lsp_zero.default_setup,
     },

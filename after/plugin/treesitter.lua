@@ -1,5 +1,5 @@
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'astro', 'c', 'go', 'lua', 'python', 'rust', 'typescript', 'http', 'json' },
+  ensure_installed = { 'astro', 'c', 'go', 'lua', 'python', 'rust', 'typescript', 'http', 'json', 'html', 'css', 'javascript' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
