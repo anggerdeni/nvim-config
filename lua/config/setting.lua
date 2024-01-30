@@ -1,5 +1,5 @@
 vim.o.breakindent = true
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 vim.o.colorcolumn = '80'
 vim.o.completeopt = 'menuone,noselect'
 vim.o.guicursor = ''
