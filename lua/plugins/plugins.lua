@@ -83,5 +83,15 @@ return {
         dependencies = { { 'nvim-lua/plenary.nvim' } },
     },
 
+    -- md related stuffs
+    { 'vim-pandoc/vim-pandoc' },
+    { "vim-pandoc/vim-pandoc-syntax" },
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+    }
+
     -- { 'f-person/git-blame.nvim' }, -- causing severe lag on relatively large monorepo
 }
