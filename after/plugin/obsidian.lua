@@ -20,14 +20,14 @@ obsidian.setup({
   detect_cwd = false,
 
   -- Optional, if you keep notes in a specific subdirectory of your vault.
-  notes_subdir = "00-zettelkasten",
+  notes_subdir = "notes",
 
   -- Optional, set the log level for obsidian.nvim. This is an integer corresponding to one of the log
   -- levels defined by "vim.log.levels.*".
   log_level = vim.log.levels.INFO,
 
   daily_notes = {
-    folder = "daily",
+    folder = "notes/daily",
     date_format = "%Y-%m-%d",
     -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
     template = nil
@@ -72,15 +72,15 @@ obsidian.setup({
     -- Toggle check-boxes.
     ["<leader>ch"] = {
       action = function()
-        local line_num = unpack(vim.api.nvim_win_get_cursor(0)) -- 1-indexed
-        local line = vim.api.nvim_get_current_line()
-        print(line)
-        if not string.match(line, "^%s*- %[[ x~>-]%].*") then
-          line = "- [ ]" .. line
-          vim.api.nvim_buf_set_lines(0, line_num - 1, line_num, true, { line })
-          return
-        end
-
+        -- local line_num = unpack(vim.api.nvim_win_get_cursor(0)) -- 1-indexed
+        -- local line = vim.api.nvim_get_current_line()
+        -- print(line)
+        -- if not string.match(line, "^%s*- %[[ x~>-]%].*") then
+        --   line = "- [ ]" .. line
+        --   vim.api.nvim_buf_set_lines(0, line_num - 1, line_num, true, { line })
+        --   return
+        -- end
+        --
         return obsidian.util.toggle_checkbox()
       end,
       opts = { buffer = true },
@@ -206,10 +206,7 @@ obsidian.setup({
 
   -- Specify how to handle attachments.
   attachments = {
-    -- The default folder to place images in via `:ObsidianPasteImg`.
-    -- If this is a relative path it will be interpreted as relative to the vault root.
-    -- You can always override this per image by passing a full path to the command instead of just a filename.
-    img_folder = "assets/imgs", -- This is the default
+    img_folder = "assets",
     -- A function that determines the text to insert in the note when pasting an image.
     -- It takes two arguments, the `obsidian.Client` and a plenary `Path` to the image file.
     -- This is the default implementation.
@@ -232,6 +229,44 @@ obsidian.setup({
   },
 })
 
-nmap("<leader>on", vim.cmd.ObsidianNew, "[O]bsidian [N]ew")
+local function new_note_on_dir(data, dir)
+  local client = obsidian.get_client()
+
+  local note
+  local open_in = obsidian.util.get_open_strategy(client.opts.open_notes_in)
+
+
+  if data ~= nil and data.args:len() > 0 then
+    note = client:new_note(data.args, nil, dir)
+  else
+    local title = vim.fn.input {
+      prompt = "Enter title (optional): ",
+    }
+    if string.len(title) == 0 then
+      title = nil
+    end
+    note = client:new_note(title, nil, dir)
+  end
+  vim.api.nvim_command(open_in .. tostring(note.path))
+end
+
+local function new_fleeting_note(data)
+  return new_note_on_dir(data, "notes/01-fleeting-notes")
+end
+
+local function new_literature_note(data)
+  return new_note_on_dir(data, "notes/02-literature-notes")
+end
+
+local function new_permanent_note(data)
+  return new_note_on_dir(data, "notes/03-permanent-notes")
+end
+
+nmap("<leader>of", new_fleeting_note, "[O]bsidian [F]leeting Note")
+nmap("<leader>on", new_fleeting_note, "[O]bsidian [F]leeting Note")
+nmap("<leader>ol", new_literature_note, "[O]bsidian [L]iterature Note")
+nmap("<leader>op", new_permanent_note, "[O]bsidian [P]ermanent Note")
 nmap("<leader>ot", vim.cmd.ObsidianToday, "[O]bsidian [T]oday daily note")
 nmap("<leader>oy", vim.cmd.ObsidianYesterday, "[O]bsidian [Y]esterday daily note")
+
+-- TODO: Create command to generate weekly notes
