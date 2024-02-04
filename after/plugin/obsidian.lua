@@ -262,6 +262,11 @@ local function new_permanent_note(data)
   return new_note_on_dir(data, "notes/03-permanent-notes")
 end
 
+local function new_inbox(data)
+  return new_note_on_dir(data, "notes/00-inbox")
+end
+
+nmap("<leader>oi", new_inbox, "[O]bsidian [I]nbox")
 nmap("<leader>of", new_fleeting_note, "[O]bsidian [F]leeting Note")
 nmap("<leader>on", new_fleeting_note, "[O]bsidian [F]leeting Note")
 nmap("<leader>ol", new_literature_note, "[O]bsidian [L]iterature Note")
