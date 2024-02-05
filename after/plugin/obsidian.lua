@@ -236,6 +236,8 @@ local function new_note_on_dir(data, dir)
   local open_in = obsidian.util.get_open_strategy(client.opts.open_notes_in)
 
 
+  dir = client.current_workspace.path .. "/" .. dir
+
   if data ~= nil and data.args:len() > 0 then
     note = client:new_note(data.args, nil, dir)
   else
@@ -262,15 +264,14 @@ local function new_permanent_note(data)
   return new_note_on_dir(data, "notes/03-permanent-notes")
 end
 
-local function new_inbox(data)
-  return new_note_on_dir(data, "notes/00-inbox")
-end
+vim.api.nvim_create_user_command('ObsidianFleeting', new_fleeting_note, { nargs='?' })
+vim.api.nvim_create_user_command('ObsidianLiterature', new_literature_note, { nargs='?' })
+vim.api.nvim_create_user_command('ObsidianPermanent', new_permanent_note, { nargs='?' })
 
-nmap("<leader>oi", new_inbox, "[O]bsidian [I]nbox")
-nmap("<leader>of", new_fleeting_note, "[O]bsidian [F]leeting Note")
-nmap("<leader>on", new_fleeting_note, "[O]bsidian [F]leeting Note")
-nmap("<leader>ol", new_literature_note, "[O]bsidian [L]iterature Note")
-nmap("<leader>op", new_permanent_note, "[O]bsidian [P]ermanent Note")
+nmap("<leader>of", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
+nmap("<leader>on", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
+nmap("<leader>ol", vim.cmd.ObsidianLiterature, "[O]bsidian [L]iterature Note")
+nmap("<leader>op", vim.cmd.ObsidianPermanent, "[O]bsidian [P]ermanent Note")
 nmap("<leader>ot", vim.cmd.ObsidianToday, "[O]bsidian [T]oday daily note")
 nmap("<leader>oy", vim.cmd.ObsidianYesterday, "[O]bsidian [Y]esterday daily note")
 
