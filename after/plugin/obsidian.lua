@@ -1,7 +1,7 @@
 local obsidian = require("obsidian")
 local nmap = function(keys, func, desc)
   if desc then
-    desc = 'Fugitive: ' .. desc
+    desc = 'Obsidian: ' .. desc
   end
 
   vim.keymap.set('n', keys, func, { desc = desc })
@@ -12,6 +12,10 @@ obsidian.setup({
     {
       name = "personal",
       path = "~/personal/second-brain",
+    },
+    {
+      name = "infra-docs",
+      path = "~/work/infra-documentation",
     },
   },
 
