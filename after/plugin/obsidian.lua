@@ -16,6 +16,9 @@ obsidian.setup({
     {
       name = "infra-docs",
       path = "~/work/infra-documentation",
+      overrides = {
+        notes_subdir = "/",
+      },
     },
   },
 
@@ -268,9 +271,17 @@ local function new_permanent_note(data)
   return new_note_on_dir(data, "notes/03-permanent-notes")
 end
 
+local function git_sync()
+  vim.api.nvim_echo({{'git sync running', 'Normal'}}, true, {})
+  local cmd = string.format("git add -A && git commit -m 'sync' && git push")
+  local result = vim.fn.system(cmd)
+  vim.api.nvim_echo({{result, 'Normal'}}, true, {})
+end
+
 vim.api.nvim_create_user_command('ObsidianFleeting', new_fleeting_note, { nargs='?' })
 vim.api.nvim_create_user_command('ObsidianLiterature', new_literature_note, { nargs='?' })
 vim.api.nvim_create_user_command('ObsidianPermanent', new_permanent_note, { nargs='?' })
+vim.api.nvim_create_user_command('ObsidianGitSync', git_sync, { nargs='?' })
 
 nmap("<leader>of", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
 nmap("<leader>on", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
@@ -278,5 +289,6 @@ nmap("<leader>ol", vim.cmd.ObsidianLiterature, "[O]bsidian [L]iterature Note")
 nmap("<leader>op", vim.cmd.ObsidianPermanent, "[O]bsidian [P]ermanent Note")
 nmap("<leader>ot", vim.cmd.ObsidianToday, "[O]bsidian [T]oday daily note")
 nmap("<leader>oy", vim.cmd.ObsidianYesterday, "[O]bsidian [Y]esterday daily note")
+nmap("<leader>og", vim.cmd.ObsidianGitSync, "[O]bsidian [G]it Sync")
 
 -- TODO: Create command to generate weekly notes
