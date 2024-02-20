@@ -22,10 +22,6 @@ obsidian.setup({
     },
   },
 
-  -- Optional, set to true to use the current directory as a vault; otherwise
-  -- the first workspace is opened by default.
-  detect_cwd = false,
-
   -- Optional, if you keep notes in a specific subdirectory of your vault.
   notes_subdir = "notes",
 
@@ -39,31 +35,24 @@ obsidian.setup({
     -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
     template = nil
   },
+  -- Where to put new notes created from completion. Valid options are
+  --  * "current_dir" - put new notes in same directory as the current buffer.
+  --  * "notes_subdir" - put new notes in the default notes subdirectory.
+  new_notes_location = "current_dir",
 
   -- Optional, completion of wiki links, local markdown links, and tags using nvim-cmp.
   completion = {
     nvim_cmp = true,
     min_chars = 2,
 
-    -- Where to put new notes created from completion. Valid options are
-    --  * "current_dir" - put new notes in same directory as the current buffer.
-    --  * "notes_subdir" - put new notes in the default notes subdirectory.
-    new_notes_location = "current_dir",
 
-    -- Control how wiki links are completed with these (mutually exclusive) options:
-    --
-    -- 1. Whether to add the note ID during completion.
-    -- E.g. "[[Foo" completes to "[[foo|Foo]]" assuming "foo" is the ID of the note.
-    -- Mutually exclusive with 'prepend_note_path' and 'use_path_only'.
-    prepend_note_id = false,
-    -- 2. Whether to add the note path during completion.
-    -- E.g. "[[Foo" completes to "[[notes/foo|Foo]]" assuming "notes/foo.md" is the path of the note.
-    -- Mutually exclusive with 'prepend_note_id' and 'use_path_only'.
-    prepend_note_path = true,
-    -- 3. Whether to only use paths during completion.
-    -- E.g. "[[Foo" completes to "[[notes/foo]]" assuming "notes/foo.md" is the path of the note.
-    -- Mutually exclusive with 'prepend_note_id' and 'prepend_note_path'.
-    use_path_only = false,
+    wiki_link_func = function(opts)
+      if opts.label ~= opts.path then
+        return string.format("[[%s|%s]]", opts.path, opts.label)
+      else
+        return string.format("[[%s]]", opts.path)
+      end
+    end,
   },
 
   -- Optional, configure key mappings. These are the defaults. If you don't want to set any keymappings this
@@ -272,16 +261,16 @@ local function new_permanent_note(data)
 end
 
 local function git_sync()
-  vim.api.nvim_echo({{'git sync running', 'Normal'}}, true, {})
+  vim.api.nvim_echo({ { 'git sync running', 'Normal' } }, true, {})
   local cmd = string.format("git add -A && git commit -m 'sync' && git push")
   local result = vim.fn.system(cmd)
-  vim.api.nvim_echo({{result, 'Normal'}}, true, {})
+  vim.api.nvim_echo({ { result, 'Normal' } }, true, {})
 end
 
-vim.api.nvim_create_user_command('ObsidianFleeting', new_fleeting_note, { nargs='?' })
-vim.api.nvim_create_user_command('ObsidianLiterature', new_literature_note, { nargs='?' })
-vim.api.nvim_create_user_command('ObsidianPermanent', new_permanent_note, { nargs='?' })
-vim.api.nvim_create_user_command('ObsidianGitSync', git_sync, { nargs='?' })
+vim.api.nvim_create_user_command('ObsidianFleeting', new_fleeting_note, { nargs = '?' })
+vim.api.nvim_create_user_command('ObsidianLiterature', new_literature_note, { nargs = '?' })
+vim.api.nvim_create_user_command('ObsidianPermanent', new_permanent_note, { nargs = '?' })
+vim.api.nvim_create_user_command('ObsidianGitSync', git_sync, { nargs = '?' })
 
 nmap("<leader>of", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
 nmap("<leader>on", vim.cmd.ObsidianFleeting, "[O]bsidian [F]leeting Note")
